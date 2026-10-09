@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPAY X</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#07090d;--bg2:#0b0f15;--card:#10151e;--card2:#141b25;
+--line:rgba(255,255,255,.08);--text:#f4f7fb;--muted:#8e99aa;
+--green:#7cffb2;--green2:#35e77f;--blue:#5da9ff;--purple:#9b7cff;
+--gold:#ffd166;--red:#ff637d;--shadow:0 20px 60px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+background:radial-gradient(circle at 15% 10%,rgba(124,255,178,.08),transparent 25%),radial-gradient(circle at 85% 20%,rgba(93,169,255,.08),transparent 25%),var(--bg);
+color:var(--text);font-family:"Noto Kufi Arabic",Tahoma,Arial,sans-serif;font-weight:600;min-height:100vh;overflow-x:hidden
+}
+body.light{--bg:#eef2f6;--bg2:#fff;--card:#fff;--card2:#f6f8fb;--line:rgba(0,0,0,.08);--text:#111827;--muted:#64748b;background:#eef2f6}
+button,input,select,textarea{font:inherit}
+button{border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.container{width:min(1200px,calc(100% - 32px));margin:auto}
+.navbar{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(7,9,13,.88);border-bottom:1px solid var(--line)}
+body.light .navbar{background:rgba(255,255,255,.9)}
+.nav-inner{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:12px;font-size:20px;font-weight:900;white-space:nowrap}
+.logo-mini{width:45px;height:45px;border-radius:15px;display:grid;place-items:center;color:#06110b;font-size:17px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--blue));box-shadow:0 0 25px rgba(124,255,178,.25);transform:rotate(-5deg)}
+.brand span,.footer-brand span{color:var(--green)}
+.nav-links{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.nav-links a{padding:10px 11px;border-radius:12px;color:var(--muted);font-size:11px}
+.nav-links a:hover{color:var(--text);background:var(--card)}
+.nav-actions{display:flex;align-items:center;gap:7px}
+.balance-pill{padding:10px 12px;border:1px solid rgba(124,255,178,.18);background:rgba(124,255,178,.07);color:var(--green);border-radius:14px;font-size:11px;white-space:nowrap}
+.circle-btn{width:40px;height:40px;border-radius:13px;background:var(--card);border:1px solid var(--line);color:var(--text);position:relative}
+.menu-btn{display:none}
+.notification-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--red);top:7px;right:7px}
+.hero{padding:65px 0 35px;overflow:hidden}
+.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:35px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);background:rgba(124,255,178,.07);border:1px solid rgba(124,255,178,.15);padding:8px 14px;border-radius:999px;font-size:11px;margin-bottom:20px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.hero h1{font-size:clamp(38px,6vw,70px);line-height:1.2;font-weight:900;margin-bottom:20px}
+.hero h1 strong{color:var(--green)}
+.hero p{color:var(--muted);line-height:2;max-width:650px;font-size:13px}
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.btn{padding:13px 20px;border-radius:15px;font-weight:800;transition:.2s}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{color:#06110b;background:linear-gradient(135deg,var(--green),#b7ffd0)}
+.btn-secondary{color:var(--text);background:var(--card);border:1px solid var(--line)}
+.hero-stats{display:flex;gap:25px;margin-top:30px;flex-wrap:wrap}
+.hero-stat strong{display:block;font-size:22px;font-weight:900}
+.hero-stat span{color:var(--muted);font-size:10px}
+.logo-stage{height:390px;position:relative;display:grid;place-items:center}
+.logo-floor{position:absolute;width:260px;height:75px;bottom:45px;border-radius:50%;background:rgba(124,255,178,.08);filter:blur(10px)}
+.logo-ring{width:270px;height:270px;border:1px solid rgba(124,255,178,.16);border-radius:50%;position:absolute;animation:spin 18s linear infinite}
+.logo-ring:before,.logo-ring:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 20px var(--green)}
+.logo-ring:before{top:22px;right:50px}.logo-ring:after{bottom:30px;left:35px;background:var(--blue)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-core{width:180px;height:180px;border-radius:45px;transform:rotate(-8deg);display:grid;place-items:center;background:linear-gradient(145deg,#18231e,#0c1217);border:1px solid rgba(124,255,178,.28);box-shadow:0 35px 70px rgba(0,0,0,.5)}
+.logo-word{transform:rotate(8deg);font-size:43px;font-weight:900;color:var(--green)}
+.floating-chip{position:absolute;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);font-size:10px}
+.chip1{top:40px;right:10px;color:var(--green)}.chip2{bottom:70px;left:0;color:var(--blue)}.chip3{top:110px;left:0;color:var(--gold)}
+section{padding:40px 0;scroll-margin-top:85px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}
+.section-head h2{font-size:24px;font-weight:900}
+.section-head p{color:var(--muted);font-size:11px;margin-top:6px}
+.section-link{color:var(--green);font-size:11px;font-weight:800;background:none}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.quick-item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;align-items:center;gap:12px}
+.quick-icon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(124,255,178,.07);color:var(--green);font-size:20px}
+.quick-item strong{display:block;font-size:13px}.quick-item span{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.games-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.game-card{min-height:165px;border:1px solid var(--line);background:radial-gradient(circle at 85% 15%,rgba(124,255,178,.09),transparent 30%),var(--card);border-radius:22px;padding:18px;position:relative;overflow:hidden;transition:.2s;cursor:pointer}
+.game-card:hover{transform:translateY(-4px);border-color:rgba(124,255,178,.3)}
+.game-number{position:absolute;left:15px;top:10px;color:rgba(255,255,255,.08);font-size:38px;font-weight:900}
+.game-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line);font-size:22px;margin-bottom:15px}
+.game-card h3{font-size:14px}.game-card p{color:var(--muted);font-size:10px;margin-top:5px}
+.game-tag{display:inline-block;margin-top:12px;font-size:9px;padding:5px 9px;border-radius:8px;background:rgba(124,255,178,.07);color:var(--green)}
+.match-layout{display:grid;grid-template-columns:1.5fr .7fr;gap:18px}
+.matches,.odds-card{background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.match-row{display:grid;grid-template-columns:90px 1fr 100px;align-items:center;gap:12px;padding:18px;border-bottom:1px solid var(--line)}
+.match-time{color:var(--green);font-size:11px}.match-time small{display:block;color:var(--muted);margin-top:4px;font-size:9px}
+.teams{display:flex;justify-content:center;align-items:center;gap:13px}
+.team{display:flex;align-items:center;gap:7px;font-size:10px}.team-badge{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:var(--card2);border:1px solid var(--line)}
+.match-score{color:var(--gold);font-size:13px}.match-status{text-align:left;color:var(--muted);font-size:9px}
+.odds-card{padding:20px}.odds-card h3{font-size:15px;margin-bottom:15px}
+.odd{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);font-size:10px}.odd b{color:var(--green)}
+.vip{border:1px solid rgba(255,209,102,.16);background:radial-gradient(circle at 80% 20%,rgba(255,209,102,.12),transparent 30%),linear-gradient(135deg,#17150d,#11151b);border-radius:26px;padding:30px}
+.vip-content{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:25px}
+.vip-badge{color:var(--gold);font-size:11px;margin-bottom:10px}.vip h2{font-size:30px}.vip p{color:var(--muted);font-size:11px;line-height:2;margin:10px 0 18px}
+.vip-features{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vip-feature{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);padding:14px;border-radius:15px;font-size:10px}
+.vip-feature b{color:var(--gold);display:block;margin-bottom:4px}
+.challenge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.challenge,.mission{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:18px}
+.challenge-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.challenge h3{font-size:13px}.reward{color:var(--gold);font-size:10px}
+.challenge p{color:var(--muted);font-size:10px;margin:10px 0 14px;line-height:1.8}
+.progress{height:7px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:inherit}
+.challenge-foot{display:flex;justify-content:space-between;margin-top:8px;color:var(--muted);font-size:9px}
+.mission-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.mission-icon{font-size:24px;margin-bottom:10px}.mission h3{font-size:11px}.mission p{color:var(--muted);font-size:9px;margin-top:5px}
+.ranking-layout{display:grid;grid-template-columns:.7fr 1.3fr;gap:18px}
+.my-rank,.rank-list{background:var(--card);border:1px solid var(--line);border-radius:22px}
+.my-rank{padding:25px;position:relative;overflow:hidden}
+.rank-label{color:var(--green);font-size:10px}.rank-number{font-size:60px;line-height:1;font-weight:900;margin:12px 0}
+.rank-name{font-size:15px}.rank-id{color:var(--muted);font-size:10px;margin-top:4px}
+.rank-list{padding:10px 18px}.rank-item{display:grid;grid-template-columns:42px 1fr 85px;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.rank-item:last-child{border-bottom:0}.rank-pos{width:34px;height:34px;display:grid;place-items:center;border-radius:10px;background:var(--card2);font-size:11px}
+.rank-user strong{display:block;font-size:10px}.rank-user span{color:var(--muted);font-size:8px}.rank-xp{text-align:left;color:var(--green);font-size:10px}
+.duel-wrap{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.duel-box{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;min-width:0}
+.duel-box h3{font-size:15px;margin-bottom:7px}.duel-box>p{color:var(--muted);font-size:10px;line-height:1.8;margin-bottom:16px}
+.duel-games{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.duel-game{padding:13px;border:1px solid var(--line);background:var(--card2);border-radius:14px;cursor:pointer;text-align:right;color:var(--text)}
+.duel-game:hover,.duel-game.active{border-color:var(--green);background:rgba(124,255,178,.07)}
+.duel-game strong{display:block;font-size:11px}.duel-game span{display:block;color:var(--muted);font-size:8px;margin-top:3px}
+.duel-console-label{display:block;color:var(--muted);font-size:10px;margin:14px 0 7px}
+.duel-console-select{width:100%;padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);outline:none}
+.duel-console-select:focus{border-color:var(--green)}
+.duel-amount{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0;padding:13px;border-radius:14px;background:rgba(255,209,102,.06);border:1px solid rgba(255,209,102,.12)}
+.duel-amount span{color:var(--muted);font-size:9px}.duel-amount strong{color:var(--gold);font-size:15px}
+.duel-input{width:100%;padding:12px;margin-top:8px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text);outline:none}
+.duel-input:focus{border-color:var(--green)}
+.duel-create{width:100%;padding:13px;border-radius:14px;background:linear-gradient(135deg,var(--green),#b7ffd0);color:#06110b;font-weight:900}
+.duel-note{margin-top:12px;color:var(--muted);font-size:8px;line-height:1.8}
+.duel-list{display:grid;gap:10px}
+.duel-row{padding:14px;border-radius:15px;background:var(--card2);border:1px solid var(--line);min-width:0}
+.duel-row-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.duel-row strong{font-size:10px}.duel-status{color:var(--green);font-size:8px}
+.duel-row-info{display:flex;justify-content:space-between;align-items:center;gap:8px;color:var(--muted);font-size:8px;margin-top:8px;flex-wrap:wrap}
+.duel-action{padding:6px 10px;border-radius:9px;background:rgba(124,255,178,.08);color:var(--green);font-size:9px}
+.deposit-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px}
+.deposit-info,.deposit-form{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:23px}
+.deposit-info h2{font-size:22px}.deposit-info p{color:var(--muted);font-size:10px;line-height:2;margin:10px 0 18px}
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.payment{padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--card2);cursor:pointer}
+.payment.active{border-color:var(--green);background:rgba(124,255,178,.07)}
+.payment strong{display:block;font-size:11px}.payment span{color:var(--muted);font-size:8px}
+.demo-account{margin-top:17px;padding:13px;border-radius:14px;background:rgba(255,209,102,.06);border:1px solid rgba(255,209,102,.12);color:var(--gold);font-size:9px}
+.form-title{font-size:16px;margin-bottom:18px}
+.field{margin-bottom:13px}.field label{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;padding:12px;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:12px;outline:none}
+.field textarea{min-height:85px;resize:vertical}
+.demo-note{margin-top:12px;color:var(--muted);font-size:9px;line-height:1.8}
+.support-box{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.support-head{padding:17px 19px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.support-head h3{font-size:13px}.support-head span{color:var(--green);font-size:9px}
+.chat-messages{padding:14px;max-height:250px;overflow:auto}
+.chat-message{display:flex;margin-bottom:10px}.chat-message.user{justify-content:flex-start}.chat-message.support{justify-content:flex-end}
+.chat-bubble{max-width:80%;padding:10px 12px;border-radius:13px;font-size:9px;line-height:1.8;overflow-wrap:anywhere}
+.chat-message.user .chat-bubble{background:rgba(93,169,255,.09);border:1px solid rgba(93,169,255,.14)}
+.chat-message.support .chat-bubble{background:rgba(124,255,178,.08);border:1px solid rgba(124,255,178,.14)}
+.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.chat-input input{flex:1;min-width:0;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font-size:10px}
+.chat-send{padding:10px 14px;border-radius:12px;background:var(--green);color:#06110b;font-weight:900}
+.modal{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:15px}
+.modal.show{display:flex}
+.profile-panel,.auth-panel{width:min(560px,100%);max-height:90vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow)}
+.profile-head{padding:22px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.profile-user{display:flex;align-items:center;gap:12px}
+.avatar{width:52px;height:52px;border-radius:17px;display:grid;place-items:center;color:#06110b;background:linear-gradient(135deg,var(--green),var(--blue));font-size:19px}
+.profile-head h3{font-size:15px}.profile-head span{color:var(--muted);font-size:9px}
+.close-btn{width:38px;height:38px;border-radius:11px;background:var(--card2);color:var(--text)}
+.profile-body{padding:22px}
+.profile-level{padding:17px;border-radius:17px;background:rgba(124,255,178,.06);border:1px solid rgba(124,255,178,.12);margin-bottom:17px}
+.level-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;font-size:10px}.level-top b{color:var(--green)}
+.profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:17px}
+.pstat{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center}
+.pstat strong{display:block;font-size:14px}.pstat span{color:var(--muted);font-size:8px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.info{padding:12px;border-radius:13px;background:var(--card2);border:1px solid var(--line)}
+.info span{display:block;color:var(--muted);font-size:8px;margin-bottom:4px}.info strong{font-size:10px}
+.activity{margin-top:17px}.activity h4{font-size:12px;margin-bottom:9px}
+.activity-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);font-size:9px}
+.activity-item span{color:var(--muted)}
+.logout-btn{width:100%;margin-top:18px;padding:12px;border-radius:13px;background:rgba(255,99,125,.08);color:var(--red);border:1px solid rgba(255,99,125,.15);font-weight:800}
+.auth-head{padding:22px 22px 16px;text-align:center;border-bottom:1px solid var(--line)}
+.auth-logo{width:60px;height:60px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;color:#06110b;background:linear-gradient(135deg,var(--green),var(--blue));font-size:20px}
+.auth-head h2{font-size:20px}.auth-head p{color:var(--muted);font-size:10px;line-height:1.8;margin-top:7px}
+.auth-body{padding:22px}.auth-field{margin-bottom:14px}
+.auth-field label{display:block;color:var(--muted);font-size:10px;margin-bottom:7px}
+.auth-field input{width:100%;padding:13px;border-radius:13px;outline:none;color:var(--text);background:var(--card2);border:1px solid var(--line)}
+.password-help{color:var(--muted);font-size:8px;line-height:1.8;margin-top:6px}
+.auth-check{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:9px;margin:5px 0 15px}
+.auth-check input{accent-color:var(--green)}
+.auth-btn{width:100%;padding:13px;border-radius:13px;color:#06110b;background:linear-gradient(135deg,var(--green),#b7ffd0);font-weight:900}
+.auth-switch{text-align:center;color:var(--muted);font-size:10px;margin-top:15px}
+.auth-switch button{background:none;color:var(--green);font-weight:900}
+.auth-security{margin-top:16px;padding:11px;border-radius:13px;background:rgba(124,255,178,.05);border:1px solid rgba(124,255,178,.1);color:var(--muted);font-size:8px;line-height:1.9;text-align:center}
+.notification-panel{position:fixed;top:88px;left:20px;z-index:250;width:min(350px,calc(100% - 40px));background:var(--card);border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow);display:none;overflow:hidden}
+.notification-panel.show{display:block}
+.notification-head{padding:14px 16px;display:flex;justify-content:space-between;border-bottom:1px solid var(--line);font-size:11px}
+.notification-head span{color:var(--green)}
+.notification-item{padding:13px 16px;border-bottom:1px solid var(--line)}
+.notification-item strong{display:block;font-size:10px}.notification-item p{color:var(--muted);font-size:8px;line-height:1.8;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,25px);z-index:500;background:#151c25;color:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 18px;font-size:10px;opacity:0;pointer-events:none;transition:.25s;box-shadow:var(--shadow);max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{border-top:1px solid var(--line);padding:28px 0 100px;margin-top:25px}
+.footer-inner{display:flex;justify-content:space-between;gap:15px;align-items:center}
+footer p{color:var(--muted);font-size:9px}.footer-brand{font-size:18px;font-weight:900}
+.mobile-nav{display:none}
+
+@media(max-width:1000px){
+.nav-links{display:none}.menu-btn{display:block}
+.hero-inner,.vip-content,.deposit-wrap,.ranking-layout{grid-template-columns:1fr}
+.logo-stage{height:320px;order:-1}
+.games-grid{grid-template-columns:repeat(2,1fr)}
+.mission-grid,.quick-grid{grid-template-columns:repeat(2,1fr)}
+.duel-wrap{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+.container{width:calc(100% - 20px)}.navbar{position:relative}.nav-inner{min-height:66px}
+.balance-pill{display:none}.brand{font-size:15px}.logo-mini{width:39px;height:39px}
+.hero{padding-top:35px}.hero h1{font-size:39px}.hero p{font-size:11px}
+.logo-stage{height:270px}.logo-ring{width:200px;height:200px}.logo-core{width:140px;height:140px;border-radius:34px}.logo-word{font-size:36px}
+.floating-chip{font-size:8px}.challenge-grid{grid-template-columns:1fr}
+.match-layout{grid-template-columns:1fr}.match-row{grid-template-columns:70px 1fr}.match-status{display:none}
+.teams{gap:7px}.team{font-size:8px}.team-badge{width:28px;height:28px}
+.vip{padding:20px}.vip h2{font-size:25px}.vip-features{grid-template-columns:1fr 1fr}
+.rank-item{grid-template-columns:35px 1fr 65px}.profile-stats{grid-template-columns:repeat(2,1fr)}
+.notification-panel{top:75px;left:10px;width:calc(100% - 20px)}
+.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,9,13,.95);backdrop-filter:blur(20px);border-top:1px solid var(--line);padding:8px 5px calc(8px + env(safe-area-inset-bottom));justify-content:space-around}
+body.light .mobile-nav{background:rgba(255,255,255,.95)}
+.mobile-nav button{background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:8px;min-width:48px}
+.mobile-nav button.active{color:var(--green)}.mobile-nav i{font-style:normal;font-size:16px}
+footer{padding-bottom:100px}.footer-inner{flex-direction:column;text-align:center}
+
+/* لە مۆبایلدا چەلەنج پێش ڕەکینگ دەردەکەوێت */
+#ranking>.container{display:flex;flex-direction:column}
+#ranking>.container>.section-head{order:0}
+#ranking>.container>.duel-wrap{order:1;margin-top:0;margin-bottom:18px}
+#ranking>.container>.ranking-layout{order:2}
+#ranking .duel-box{padding:15px;border-radius:17px}
+#ranking .duel-games{grid-template-columns:repeat(2,minmax(0,1fr))}
+#ranking .duel-game{padding:11px;min-width:0}
+#ranking .duel-game strong{font-size:10px}
+#ranking .duel-row-top{align-items:flex-start;flex-wrap:wrap}
+#ranking .duel-row-info{align-items:flex-start}
+#ranking .duel-row-info>span{line-height:1.9;overflow-wrap:anywhere}
+#ranking .rank-list{padding:8px 12px}
+#ranking .rank-item{gap:7px}
+#ranking .rank-xp{font-size:9px}
+#ranking .rank-number{font-size:48px}
+}
+@media(max-width:390px){
+.quick-grid,.games-grid,.mission-grid{grid-template-columns:1fr}
+#ranking .duel-games{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+<div class="container nav-inner">
+<a href="#home" class="brand"><div class="logo-mini">SX</div><div>SPAY <span>X</span></div></a>
+<nav class="nav-links">
+<a href="#home">سەرەتا</a><a href="#games">یارییەکان</a><a href="#matches">یاریی ڕاستەوخۆ</a><a href="#ranking">چەلەنج 1v1</a><a href="#deposit">پارەدان</a>
+</nav>
+<div class="nav-actions">
+<div class="balance-pill">💰 <span id="navBalance">500</span> کرێدیت</div>
+<button class="circle-btn" onclick="toggleNotifications()" title="ئاگادارکردنەوەکان">🔔<i class="notification-dot" id="notificationDot"></i></button>
+<button class="circle-btn" onclick="toggleTheme()" title="گۆڕینی دۆخ">☼</button>
+<button class="circle-btn" onclick="openProfile()" title="پرۆفایل">👤</button>
+<button class="circle-btn menu-btn" onclick="goTo('games')">☰</button>
+</div>
+</div>
+</header>
+
+<div class="notification-panel" id="notificationPanel">
+<div class="notification-head"><strong>🔔 ئاگادارکردنەوەکان</strong><span>نوێ</span></div>
+<div class="notification-item"><strong>⚔️ چەلەنجی 1v1</strong><p>چەلەنجی 1v1 بۆ یاریی دڵخوازت دروست بکە.</p></div>
+<div class="notification-item"><strong>🏆 ڕەکینگ</strong><p>لە ڕەکینگدا خۆت ببینە و XP کۆبکەرەوە.</p></div>
+<div class="notification-item"><strong>💬 Support</strong><p>لە بەشی Support Chat پەیوەندیمان پێوە بکە.</p></div>
+</div>
+
+<main id="home">
+<section class="hero">
+<div class="container hero-inner">
+<div class="hero-copy">
+<div class="eyebrow"><i></i> پلاتفۆرمی یاری و چالاکی</div>
+<h1>یاری بکە،<br><strong>SPAY X</strong> بەدەستبهێنە.</h1>
+<p>جیهانێکی نوێ بۆ یاریزانان؛ یاری، چالاکی، ڕەکینگ، چەلەنج و خەڵات هەمووی لە یەک شوێن.</p>
+<div class="hero-buttons">
+<button class="btn btn-primary" onclick="goTo('games')">🎮 دەستپێکردنی یاری</button>
+<button class="btn btn-secondary" onclick="openProfile()">👤 پرۆفایلەکەم</button>
+</div>
+<div class="hero-stats">
+<div class="hero-stat"><strong>12K+</strong><span>یاریزان</span></div>
+<div class="hero-stat"><strong>38K+</strong><span>یاری کراوە</span></div>
+<div class="hero-stat"><strong>24/7</strong><span>چالاکی</span></div>
+</div>
+</div>
+<div class="logo-stage">
+<div class="logo-floor"></div><div class="logo-ring"></div>
+<div class="logo-core"><div class="logo-word">SPAY X</div></div>
+<div class="floating-chip chip1">● LIVE</div><div class="floating-chip chip2">⚡ XP BOOST</div><div class="floating-chip chip3">🏆 VVIP</div>
+</div>
+</div>
+</section>
+
+<section class="quick-bar">
+<div class="container quick-grid">
+<div class="quick-item"><div class="quick-icon">🎮</div><div><strong>یارییەکان</strong><span>هەموو یارییەکان ببینە</span></div></div>
+<div class="quick-item"><div class="quick-icon">⚔️</div><div><strong>چەلەنج</strong><span>چالاکییەکان تەواو بکە</span></div></div>
+<div class="quick-item"><div class="quick-icon">🏆</div><div><strong>ڕەکینگ</strong><span>شوێنی خۆت بزانە</span></div></div>
+<div class="quick-item"><div class="quick-icon">💎</div><div><strong>VVIP</strong><span>ئەزموونی تایبەت</span></div></div>
+</div>
+</section>
+
+<section id="games">
+<div class="container">
+<div class="section-head"><div><h2>🎮 یارییەکان</h2><p>یاریی دڵخوازەکەت هەڵبژێرە و دەستپێبکە</p></div><a class="section-link" href="#games">هەمووی ببینە ←</a></div>
+<div class="games-grid">
+<div class="game-card" onclick="gameClick('EA FC 27')"><div class="game-number">01</div><div class="game-icon">⚽</div><h3>EA FC 27</h3><p>فوتبۆڵی پیشەیی</p><span class="game-tag">LIVE</span></div>
+<div class="game-card" onclick="gameClick('eFootball')"><div class="game-number">02</div><div class="game-icon">🥅</div><h3>eFootball</h3><p>ماتچی ڕاستەوخۆ</p><span class="game-tag">LIVE</span></div>
+<div class="game-card" onclick="gameClick('PUBG')"><div class="game-number">03</div><div class="game-icon">🎯</div><h3>PUBG</h3><p>Battle Royale</p><span class="game-tag">HOT</span></div>
+<div class="game-card" onclick="gameClick('Call of Duty')"><div class="game-number">04</div><div class="game-icon">🎯</div><h3>Call of Duty</h3><p>Multiplayer</p><span class="game-tag">LIVE</span></div>
+<div class="game-card" onclick="gameClick('Free Fire')"><div class="game-number">05</div><div class="game-icon">🔥</div><h3>Free Fire</h3><p>Survival Challenge</p><span class="game-tag">HOT</span></div>
+<div class="game-card" onclick="gameClick('Tekken')"><div class="game-number">06</div><div class="game-icon">🥊</div><h3>Tekken</h3><p>Fighting Arena</p><span class="game-tag">DUEL</span></div>
+<div class="game-card" onclick="gameClick('Mortal Kombat')"><div class="game-number">07</div><div class="game-icon">⚡</div><h3>Mortal Kombat</h3><p>Fight Challenge</p><span class="game-tag">DUEL</span></div>
+<div class="game-card" onclick="gameClick('Fortnite')"><div class="game-number">08</div><div class="game-icon">🛡️</div><h3>Fortnite</h3><p>Battle Royale</p><span class="game-tag">HOT</span></div>
+</div>
+</div>
+</section>
+
+<section id="matches">
+<div class="container">
+<div class="section-head"><div><h2>⚡ یارییە ڕاستەوخۆکان</h2><p>ماتچە چالاکەکان لە ئێستادا</p></div><span class="section-link">● ڕاستەوخۆ</span></div>
+<div class="match-layout">
+<div class="matches">
+<div class="match-row"><div class="match-time">20:30<small>ئەمڕۆ</small></div><div class="teams"><div class="team"><span>Shadow</span><div class="team-badge">🟢</div></div><div class="match-score">VS</div><div class="team"><div class="team-badge">🔵</div><span>Falcon</span></div></div><div class="match-status">دەستپێدەکات</div></div>
+<div class="match-row"><div class="match-time">21:00<small>ئەمڕۆ</small></div><div class="teams"><div class="team"><span>Raptor</span><div class="team-badge">🟣</div></div><div class="match-score">VS</div><div class="team"><div class="team-badge">🟡</div><span>Storm</span></div></div><div class="match-status">دەستپێدەکات</div></div>
+<div class="match-row"><div class="match-time">22:15<small>ئەمڕۆ</small></div><div class="teams"><div class="team"><span>Dragon</span><div class="team-badge">🔴</div></div><div class="match-score">VS</div><div class="team"><div class="team-badge">⚪</div><span>Ghost</span></div></div><div class="match-status">چاوەڕوانی</div></div>
+</div>
+<div class="odds-card"><h3>🔥 زۆرترین چالاکی</h3><div class="odd"><span>PUBG</span><b>+320</b></div><div class="odd"><span>EA FC</span><b>+280</b></div><div class="odd"><span>COD</span><b>+245</b></div><div class="odd"><span>Free Fire</span><b>+190</b></div></div>
+</div>
+</div>
+</section>
+
+<section><div class="container"><div class="vip"><div class="vip-content"><div><div class="vip-badge">✦ SPAY X VVIP</div><h2>ئەزموونی جیاواز</h2><p>بەشداری VVIP بکە و دەستگەیشتن بە تایبەتمەندی و خەڵاتی زیاتر و چالاکییە تایبەتەکان بەدەستبهێنە.</p><button class="btn btn-primary" onclick="toast('VVIP بە زوویی چالاک دەکرێت')">بینینی VVIP</button></div><div class="vip-features"><div class="vip-feature"><b>+XP</b>XP ـی زیاتر</div><div class="vip-feature"><b>🏆</b>خەڵاتی تایبەت</div><div class="vip-feature"><b>⚡</b>پێشینەی چالاکی</div><div class="vip-feature"><b>💎</b>Badge ـی تایبەت</div></div></div></div></div></section>
+
+<section><div class="container">
+<div class="section-head"><div><h2>⚔️ چەلەنجەکان</h2><p>ئەرکەکان تەواو بکە و XP و خەڵات بەدەستبهێنە</p></div></div>
+<div class="challenge-grid">
+<div class="challenge"><div class="challenge-top"><h3>🎮 ٣ یاری بکە</h3><span class="reward">+150 XP</span></div><p>سێ یاری لە هەر یارییەک بکە.</p><div class="progress"><span style="width:66%"></span></div><div class="challenge-foot"><span>2 / 3</span><span>66%</span></div></div>
+<div class="challenge"><div class="challenge-top"><h3>🏆 یەک بردنەوە</h3><span class="reward">+250 XP</span></div><p>یەک یاری بە سەرکەوتوویی ببرە.</p><div class="progress"><span style="width:40%"></span></div><div class="challenge-foot"><span>0 / 1</span><span>40%</span></div></div>
+<div class="challenge"><div class="challenge-top"><h3>🔥 Streak</h3><span class="reward">+300 XP</span></div><p>٣ ڕۆژ بەردەوام چالاک بە.</p><div class="progress"><span style="width:80%"></span></div><div class="challenge-foot"><span>2 / 3</span><span>80%</span></div></div>
+</div></div></section>
+
+<section><div class="container">
+<div class="section-head"><div><h2>🎯 Mission ـەکان</h2><p>ئامانجە ڕۆژانەکانت تەواو بکە</p></div></div>
+<div class="mission-grid">
+<div class="mission"><div class="mission-icon">⚡</div><h3>١٠٠ XP بەدەستبهێنە</h3><p>لە یارییەکاندا XP کۆبکەرەوە</p></div>
+<div class="mission"><div class="mission-icon">🎮</div><h3>٢ یاری بکە</h3><p>دوو یاری تەواو بکە</p></div>
+<div class="mission"><div class="mission-icon">🏆</div><h3>یەک بردنەوە</h3><p>یەک ماتچ ببرە</p></div>
+<div class="mission"><div class="mission-icon">🔥</div><h3>Streak ـەکەت بپارێزە</h3><p>ئەمڕۆ چالاک بە</p></div>
+</div></div></section>
+
+<section id="ranking"><div class="container">
+<div class="section-head"><div><h2>⚔️ چەلەنجی 1v1</h2><p>یاری، کۆنسۆڵ و بڕی چەلەنج دیاری بکە و لەگەڵ یاریزانی تر 1v1 بکە</p></div></div>
+
+<div class="ranking-layout">
+<div class="my-rank"><div class="rank-label">ڕەکینگی من</div><div class="rank-number">#24</div><div class="rank-name" id="rankName">SPAY Player</div><div class="rank-id" id="rankId">SX-2048</div></div>
+<div class="rank-list">
+<div class="rank-item"><div class="rank-pos">🥇</div><div class="rank-user"><strong>ShadowX</strong><span>SX-1001</span></div><div class="rank-xp">9,840 XP</div></div>
+<div class="rank-item"><div class="rank-pos">🥈</div><div class="rank-user"><strong>Raptor</strong><span>SX-1022</span></div><div class="rank-xp">8,920 XP</div></div>
+<div class="rank-item"><div class="rank-pos">🥉</div><div class="rank-user"><strong>Falcon</strong><span>SX-1035</span></div><div class="rank-xp">8,410 XP</div></div>
+<div class="rank-item"><div class="rank-pos">4</div><div class="rank-user"><strong>Dragon</strong><span>SX-1088</span></div><div class="rank-xp">7,950 XP</div></div>
+<div class="rank-item"><div class="rank-pos">5</div><div class="rank-user"><strong>Ghost</strong><span>SX-1104</span></div><div class="rank-xp">7,620 XP</div></div>
+</div>
+</div>
+
+<div class="duel-wrap">
+<div class="duel-box">
+<h3>⚔️ دروستکردنی چەلەنجی 1v1</h3>
+<p>یاری، کۆنسۆڵ و بڕی چەلەنج هەڵبژێرە. ئەم بڕە تەنها Demo Credit ـە.</p>
+
+<div class="duel-games">
+<div class="duel-game active" data-game="EA FC 27" onclick="selectDuelGame(this)"><strong>⚽ EA FC 27</strong><span>1v1 فوتبۆڵ</span></div>
+<div class="duel-game" data-game="eFootball" onclick="selectDuelGame(this)"><strong>🥅 eFootball</strong><span>1v1 یاری</span></div>
+<div class="duel-game" data-game="Tekken" onclick="selectDuelGame(this)"><strong>🥊 Tekken</strong><span>1v1 Fight</span></div>
+<div class="duel-game" data-game="Mortal Kombat" onclick="selectDuelGame(this)"><strong>⚡ Mortal Kombat</strong><span>1v1 Fight</span></div>
+<div class="duel-game" data-game="Call of Duty" onclick="selectDuelGame(this)"><strong>🎯 Call of Duty</strong><span>1v1 Multiplayer</span></div>
+<div class="duel-game" data-game="Fortnite" onclick="selectDuelGame(this)"><strong>🛡️ Fortnite</strong><span>1v1 Battle</span></div>
+</div>
+
+<label class="duel-console-label" for="duelConsole">🎮 جۆری کۆنسۆڵ</label>
+<select class="duel-console-select" id="duelConsole">
+<option value="PC">🖥️ PC</option>
+<option value="PlayStation 5">🎮 PlayStation 5</option>
+<option value="PlayStation 4">🎮 PlayStation 4</option>
+<option value="Xbox">🟩 Xbox</option>
+<option value="Mobile">📱 Mobile</option>
+</select>
+
+<div class="duel-amount"><span>بڕی چەلەنج</span><strong id="duelAmountDisplay">1,000 کرێدیت</strong></div>
+<input id="duelStake" class="duel-input" type="number" min="100" max="10000" step="100" value="1000" oninput="updateDuelAmount()" aria-label="بڕی چەلەنج" placeholder="بڕ بنووسە، تا 10,000">
+<button class="duel-create" style="margin-top:12px" onclick="createDuel()">⚔️ دروستکردنی چەلەنج</button>
+<div class="duel-note">⚠️ بڕەکە لە 100 تا 10,000 Demo Credit ـە. ئەم وێبسایتە تەنها Demo ـە؛ بۆ پەیوەندی ڕاستەوخۆ لەگەڵ یاریزانانی تر، سێرڤەر پێویستە.</div>
+</div>
+
+<div class="duel-box">
+<h3>🔥 چەلەنجە چالاکەکان</h3>
+<p>چەلەنجەکانی بەردەست ببینە؛ یاری، کۆنسۆڵ و بڕەکەیان بپشکنە و بەشداری بکە.</p>
+<div class="duel-list" id="duelList">
+<div class="duel-row" data-seed="true" data-stake="10000" data-owner="ShadowX" data-game="EA FC 27" data-console="PlayStation 5" data-matched="false">
+<div class="duel-row-top"><strong>⚽ ShadowX — EA FC 27</strong><span class="duel-status">چاوەڕوانی یاریزان</span></div>
+<div class="duel-row-info"><span>بڕ: 10,000 | کۆنسۆڵ: PlayStation 5</span><button class="duel-action" onclick="joinDuel(this)">بەشداری</button></div>
+</div>
+<div class="duel-row" data-seed="true" data-stake="10000" data-owner="Raptor" data-game="Tekken" data-console="PC" data-matched="false">
+<div class="duel-row-top"><strong>🥊 Raptor — Tekken</strong><span class="duel-status">چاوەڕوانی یاریزان</span></div>
+<div class="duel-row-info"><span>بڕ: 10,000 | کۆنسۆڵ: PC</span><button class="duel-action" onclick="joinDuel(this)">بەشداری</button></div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section id="deposit"><div class="container">
+<div class="section-head"><div><h2>💳 پارەدان</h2><p>سیستەمی تاقیکردنەوەی SPAY X</p></div></div>
+<div class="deposit-wrap">
+<div class="deposit-info"><h2>زیادکردنی کرێدیت</h2><p>ئەم بەشە تەنها بۆ Demo ـی SPAY X ـە. هیچ پارەی ڕاستەقینە لێرەدا وەرناگیرێت.</p>
+<div class="payment-methods">
+<div class="payment active" id="fastPayBtn" onclick="selectPayment('FastPay')"><strong>FastPay</strong><span>Demo Payment</span></div>
+<div class="payment" id="fibBtn" onclick="selectPayment('FIB')"><strong>FIB</strong><span>Demo Payment</span></div>
+</div>
+<div class="demo-account">ژمارەی Reference بۆ Demo: <strong>DEMO-10000</strong></div>
+</div>
+<div class="deposit-form">
+<div class="form-title">زیادکردنی کرێدیت</div>
+<div class="field"><label>شێوازی پارەدان</label><select id="depositMethod" onchange="selectPayment(this.value)"><option value="FastPay">FastPay</option><option value="FIB">FIB</option></select></div>
+<div class="field"><label>بڕی کرێدیت</label><input id="depositAmount" type="number" min="1" max="1000000" placeholder="بۆ نموونە 100"></div>
+<div class="field"><label>ژمارەی Reference</label><input id="depositReference" type="text" placeholder="DEMO-12345"></div>
+<button class="btn btn-primary" style="width:100%" onclick="submitDeposit()">💰 زیادکردنی Demo Credit</button>
+<div class="demo-note">⚠️ ئەمە تەنها Demo ـە و هیچ پارەی ڕاستەقینەی تێدا نییە. FastPay و FIB لێرەدا تەنها هەڵبژاردەی نمایشیین.</div>
+</div>
+</div>
+
+<div class="support-box">
+<div class="support-head"><h3>💬 Support Chat</h3><span>● چالاک</span></div>
+<div class="chat-messages" id="chatMessages">
+<div class="chat-message support"><div class="chat-bubble">بەخێربێیت بۆ Support ـی SPAY X. چۆن دەتوانین یارمەتیت بدەین؟</div></div>
+<div class="chat-message user"><div class="chat-bubble">دەتوانم چەلەنجی 1v1 دروست بکەم؟</div></div>
+<div class="chat-message support"><div class="chat-bubble">بەڵێ، لە بەشی ڕەکینگ دەتوانیت چەلەنجی 1v1 دروست بکەیت.</div></div>
+</div>
+<div class="chat-input"><input id="chatInput" type="text" placeholder="پەیامەکەت بنووسە..." onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()">ناردن</button></div>
+</div>
+</div></section>
+</main>
+
+<footer><div class="container footer-inner"><div class="footer-brand">SPAY <span>X</span></div><p>© 2026 SPAY X — هەموو مافەکان پارێزراون.</p><p>Gaming • Challenges • Ranking</p></div></footer>
+
+<nav class="mobile-nav">
+<button class="active" onclick="goTo('home')"><i>⌂</i>سەرەتا</button>
+<button onclick="goTo('games')"><i>🎮</i>یارییەکان</button>
+<button onclick="goTo('ranking')"><i>🏆</i>چەلەنج</button>
+<button onclick="goTo('deposit')"><i>💳</i>پارەدان</button>
+<button onclick="openProfile()"><i>👤</i>پرۆفایل</button>
+</nav>
+
+<div class="modal" id="profileModal" onclick="outsideProfile(event)">
+<div class="profile-panel">
+<div class="profile-head"><div class="profile-user"><div class="avatar" id="profileAvatar">S</div><div><h3 id="profileName">SPAY Player</h3><span id="profilePlayerId">SX-2048</span></div></div><button class="close-btn" onclick="closeProfile()">✕</button></div>
+<div class="profile-body">
+<div class="profile-level"><div class="level-top"><span>Level 12</span><b>2,450 / 3,000 XP</b></div><div class="progress"><span style="width:82%"></span></div></div>
+<div class="profile-stats"><div class="pstat"><strong id="profileBalance">500</strong><span>کرێدیت</span></div><div class="pstat"><strong>42</strong><span>بردنەوە</span></div><div class="pstat"><strong>18</strong><span>دۆڕان</span></div><div class="pstat"><strong>60</strong><span>یاری</span></div></div>
+<div class="info-grid">
+<div class="info"><span>ناوی یاریزان</span><strong id="profileName2">SPAY Player</strong></div><div class="info"><span>Player ID</span><strong id="profilePlayerId2">SX-2048</strong></div>
+<div class="info"><span>ئاست</span><strong>Level 12</strong></div><div class="info"><span>Daily Streak</span><strong>7 ڕۆژ 🔥</strong></div>
+<div class="info"><span>ڕەکینگ</span><strong>#24</strong></div><div class="info"><span>دۆخی هەژمار</span><strong style="color:var(--green)">چالاک</strong></div>
+</div>
+<div class="activity"><h4>چالاکییەکانی دواوە</h4><div class="activity-item"><span>🎮 یاری PUBG</span><b>+120 XP</b></div><div class="activity-item"><span>🏆 چەلەنج تەواو کرا</span><b>+250 XP</b></div><div class="activity-item"><span>🔥 Daily Streak</span><b>+50 XP</b></div></div>
+<button class="logout-btn" onclick="logout()">🚪 دەرچوون لە هەژمار</button>
+</div></div></div>
+
+<div class="modal" id="authModal" onclick="outsideAuth(event)">
+<div class="auth-panel">
+<div class="auth-head"><div class="auth-logo">SX</div><h2 id="authTitle">چوونەژوورەوە</h2><p id="authSubtitle">بۆ بەردەوامبوون بچۆ ژوورەوە بۆ هەژمارەکەت</p></div>
+<div class="auth-body">
+<form id="loginForm" onsubmit="login(event)">
+<div class="auth-field"><label>ناوی بەکارهێنەر</label><input id="loginUsername" type="text" autocomplete="username" placeholder="ناوی بەکارهێنەر" required></div>
+<div class="auth-field"><label>وشەی نهێنی</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="وشەی نهێنی" required></div>
+<label class="auth-check"><input id="rememberLogin" type="checkbox"><span>لەبیرم مەخە</span></label>
+<button class="auth-btn" type="submit">🔐 چوونەژوورەوە</button>
+<div class="auth-switch">هەژمارت نییە؟ <button type="button" onclick="showRegister()">هەژمار دروست بکە</button></div>
+</form>
+<form id="registerForm" onsubmit="register(event)" style="display:none">
+<div class="auth-field"><label>ناوی بەکارهێنەر</label><input id="registerUsername" type="text" autocomplete="username" placeholder="ناوی بەکارهێنەر" minlength="3" maxlength="20" required><div class="password-help">تەنها پیت، ژمارە و _ بەکاربهێنە.</div></div>
+<div class="auth-field"><label>وشەی نهێنی</label><input id="registerPassword" type="password" autocomplete="new-password" placeholder="وشەی نهێنی" minlength="8" required><div class="password-help">لانیکەم ٨ پیت.</div></div>
+<div class="auth-field"><label>دووبارە وشەی نهێنی</label><input id="registerPassword2" type="password" autocomplete="new-password" placeholder="دووبارە وشەی نهێنی" minlength="8" required></div>
+<button class="auth-btn" type="submit">✨ دروستکردنی هەژمار</button>
+<div class="auth-switch">هەژمارت هەیە؟ <button type="button" onclick="showLogin()">چوونەژوورەوە</button></div>
+</form>
+<div class="auth-security">🔒 ئەمە سیستەمی Demo ـی SPAY X ـە. زانیارییەکان لەسەر ئەم وێبگەڕە هەڵدەگیرێن، نەک لە سێرڤەری پارێزراوی ئۆنلاین.</div>
+</div></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const USERS_KEY="SPAY_X_USERS_V1";
+const SESSION_KEY="SPAY_X_SESSION_V1";
+let state={username:"SPAY Player",playerId:"SX-2048",balance:500,payment:"FastPay"};
+let currentUser=null;
+let selectedDuelGame="EA FC 27";
+let toastTimer=null;
+
+function getUsers(){
+try{
+const users=JSON.parse(localStorage.getItem(USERS_KEY));
+return Array.isArray(users)?users:[];
+}catch(e){return []}
+}
+function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
+function getSession(){return localStorage.getItem(SESSION_KEY)||sessionStorage.getItem(SESSION_KEY)||null}
+function saveSession(username,remember){
+localStorage.removeItem(SESSION_KEY);
+sessionStorage.removeItem(SESSION_KEY);
+(remember?localStorage:sessionStorage).setItem(SESSION_KEY,username);
+}
+function clearSession(){
+localStorage.removeItem(SESSION_KEY);
+sessionStorage.removeItem(SESSION_KEY);
+}
+async function hashPassword(password){
+if(!window.crypto?.subtle)throw new Error("Secure crypto unavailable");
+const data=new TextEncoder().encode(password);
+const hash=await crypto.subtle.digest("SHA-256",data);
+return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function validUsername(username){return /^[a-zA-Z0-9_]+$/.test(username)}
+function generatePlayerId(){
+let id;
+const users=getUsers();
+do{id="SX-"+Math.floor(1000+Math.random()*9000)}while(users.some(u=>u.playerId===id));
+return id;
+}
+function getCurrentUser(){
+const username=getSession();
+if(!username){currentUser=null;return null}
+const user=getUsers().find(u=>u.username.toLowerCase()===username.toLowerCase());
+if(!user){clearSession();currentUser=null;return null}
+currentUser=user;
+return user;
+}
+function saveCurrentUser(){
+if(!currentUser)return;
+const users=getUsers();
+const i=users.findIndex(u=>u.username.toLowerCase()===currentUser.username.toLowerCase());
+if(i!==-1){users[i]=currentUser;saveUsers(users)}
+}
+function loadUserState(){
+const user=getCurrentUser();
+if(!user){
+state={username:"SPAY Player",playerId:"SX-2048",balance:500,payment:"FastPay"};
+return;
+}
+state={
+username:user.username,
+playerId:user.playerId,
+balance:Number(user.balance)||0,
+payment:user.payment||"FastPay"
+};
+}
+function saveState(){
+if(!currentUser)return;
+currentUser.balance=state.balance;
+currentUser.payment=state.payment;
+saveCurrentUser();
+}
+function updateUI(){
+const user=getCurrentUser();
+const nav=document.getElementById("navBalance");
+if(user){
+state.username=user.username;
+state.playerId=user.playerId;
+state.balance=Number(user.balance)||0;
+state.payment=user.payment||"FastPay";
+nav.textContent=state.balance.toLocaleString();
+document.getElementById("profileName").textContent=state.username;
+document.getElementById("profileName2").textContent=state.username;
+document.getElementById("profilePlayerId").textContent=state.playerId;
+document.getElementById("profilePlayerId2").textContent=state.playerId;
+document.getElementById("profileBalance").textContent=state.balance.toLocaleString();
+document.getElementById("rankName").textContent=state.username;
+document.getElementById("rankId").textContent=state.playerId;
+document.getElementById("profileAvatar").textContent=state.username.charAt(0).toUpperCase();
+}else{
+nav.textContent="چوونەژوورەوە";
+document.getElementById("rankName").textContent="میوان";
+document.getElementById("rankId").textContent="چوونەژوورەوە پێویستە";
+document.getElementById("profileBalance").textContent="—";
+}
+}
+function toast(message){
+const box=document.getElementById("toast");
+box.textContent=message;
+box.classList.add("show");
+clearTimeout(toastTimer);
+toastTimer=setTimeout(()=>box.classList.remove("show"),2800);
+}
+function goTo(id){
+document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function openProfile(){
+if(!getCurrentUser()){showLogin();return}
+updateUI();
+document.getElementById("profileModal").classList.add("show");
+}
+function closeProfile(){document.getElementById("profileModal").classList.remove("show")}
+function outsideProfile(e){if(e.target.id==="profileModal")closeProfile()}
+function openAuth(){document.getElementById("authModal").classList.add("show")}
+function closeAuth(){document.getElementById("authModal").classList.remove("show")}
+function outsideAuth(e){if(e.target.id==="authModal")closeAuth()}
+function showLogin(){
+openAuth();
+document.getElementById("authTitle").textContent="چوونەژوورەوە";
+document.getElementById("authSubtitle").textContent="بۆ بەردەوامبوون بچۆ ژوورەوە بۆ هەژمارەکەت";
+document.getElementById("loginForm").style.display="block";
+document.getElementById("registerForm").style.display="none";
+}
+function showRegister(){
+openAuth();
+document.getElementById("authTitle").textContent="دروستکردنی هەژمار";
+document.getElementById("authSubtitle").textContent="هەژمارێکی نوێی SPAY X دروست بکە";
+document.getElementById("loginForm").style.display="none";
+document.getElementById("registerForm").style.display="block";
+}
+async function register(event){
+event.preventDefault();
+const username=document.getElementById("registerUsername").value.trim();
+const password=document.getElementById("registerPassword").value;
+const password2=document.getElementById("registerPassword2").value;
+if(username.length<3){toast("ناوی بەکارهێنەر دەبێت لانیکەم ٣ پیت بێت");return}
+if(!validUsername(username)){toast("تەنها پیت و ژمارە و _ بەکاربهێنە");return}
+if(password.length<8){toast("وشەی نهێنی دەبێت لانیکەم ٨ پیت بێت");return}
+if(password!==password2){toast("وشە نهێنییەکان یەکسان نین");return}
+const users=getUsers();
+if(users.some(u=>u.username.toLowerCase()===username.toLowerCase())){
+toast("ئەم ناوی بەکارهێنەرە پێشتر بەکارهاتووە");
+return;
+}
+try{
+const user={
+username,
+passwordHash:await hashPassword(password),
+playerId:generatePlayerId(),
+balance:500,
+payment:"FastPay",
+level:1,xp:0,wins:0,losses:0,matches:0,streak:0,rank:24,
+createdAt:new Date().toISOString()
+};
+users.push(user);
+saveUsers(users);
+currentUser=user;
+saveSession(username,true);
+loadUserState();
+updateUI();
+closeAuth();
+toast("هەژمارەکەت بە سەرکەوتوویی دروست کرا 🎉");
+}catch(e){
+toast("تکایە لە وێبگەڕێکی نوێدا هەوڵبدەرەوە");
+}
+}
+async function login(event){
+event.preventDefault();
+const username=document.getElementById("loginUsername").value.trim();
+const password=document.getElementById("loginPassword").value;
+const remember=document.getElementById("rememberLogin").checked;
+const users=getUsers();
+const user=users.find(u=>u.username.toLowerCase()===username.toLowerCase());
+if(!user){toast("ناوی بەکارهێنەر یان وشەی نهێنی هەڵەیە");return}
+try{
+if(await hashPassword(password)!==user.passwordHash){
+toast("ناوی بەکارهێنەر یان وشەی نهێنی هەڵەیە");
+return;
+}
+currentUser=user;
+saveSession(user.username,remember);
+loadUserState();
+updateUI();
+closeAuth();
+toast("بە سەرکەوتوویی چوویتە ژوورەوە 🎉");
+}catch(e){
+toast("چوونەژوورەوە لەم وێبگەڕەدا پشتگیری ناکرێت");
+}
+}
+function logout(){
+clearSession();
+currentUser=null;
+state={username:"SPAY Player",playerId:"SX-2048",balance:500,payment:"FastPay"};
+closeProfile();
+updateUI();
+toast("لە هەژمارەکەت دەرچوویت");
+}
+function selectPayment(method){
+if(!getCurrentUser()){
+showLogin();
+toast("بۆ بەکارهێنانی پارەدان دەبێت بچیتە ژوورەوە");
+return;
+}
+state.payment=method;
+document.getElementById("depositMethod").value=method;
+document.getElementById("fastPayBtn").classList.toggle("active",method==="FastPay");
+document.getElementById("fibBtn").classList.toggle("active",method==="FIB");
+saveState();
+}
+function submitDeposit(){
+if(!getCurrentUser()){
+showLogin();
+toast("بۆ زیادکردنی کرێدیت دەبێت بچیتە ژوورەوە");
+return;
+}
+const amount=Number(document.getElementById("depositAmount").value);
+const reference=document.getElementById("depositReference").value.trim();
+const method=document.getElementById("depositMethod").value;
+if(!Number.isSafeInteger(amount)||amount<=0||amount>1000000){
+toast("بڕێکی دروست لە 1 تا 1,000,000 بنووسە");
+return;
+}
+if(!reference){toast("تکایە Reference بنووسە");return}
+if(!/^DEMO[-_]/i.test(reference)){
+toast("لە سیستەمی Demo ـدا Reference دەبێت بە DEMO- دەست پێ بکات");
+return;
+}
+state.balance+=amount;
+state.payment=method;
+saveState();
+updateUI();
+document.getElementById("depositAmount").value="";
+document.getElementById("depositReference").value="";
+toast(`${amount.toLocaleString()} کرێدیتی Demo زیادکرا`);
+}
+function selectDuelGame(element){
+document.querySelectorAll(".duel-game").forEach(item=>item.classList.remove("active"));
+element.classList.add("active");
+selectedDuelGame=element.dataset.game;
+}
+function updateDuelAmount(){
+const input=document.getElementById("duelStake");
+let amount=Number(input.value);
+if(!Number.isFinite(amount))amount=100;
+amount=Math.max(100,Math.min(10000,Math.round(amount/100)*100));
+document.getElementById("duelAmountDisplay").textContent=amount.toLocaleString()+" کرێدیت";
+}
+function getDuelStake(){
+const input=document.getElementById("duelStake");
+const raw=input.value.trim();
+if(raw==="")return 0;
+const amount=Number(raw);
+if(!Number.isFinite(amount)||!Number.isInteger(amount))return 0;
+if(amount<100||amount>10000||amount%100!==0)return 0;
+return amount;
+}
+function createDuel(){
+if(!getCurrentUser()){
+showLogin();
+toast("بۆ دروستکردنی چەلەنج دەبێت بچیتە ژوورەوە");
+return;
+}
+const stake=getDuelStake();
+if(stake<100||stake>10000){
+toast("بڕەکە دەبێت لە 100 تا 10,000 بێت و بە 100 دابەش بێت");
+return;
+}
+if(state.balance<stake){
+toast("کرێدیتی Demo ـت بەشی ئەم چەلەنجە ناکات");
+return;
+}
+const consoleType=document.getElementById("duelConsole").value;
+state.balance-=stake;
+saveState();
+updateUI();
+
+const list=document.getElementById("duelList");
+const row=document.createElement("div");
+row.className="duel-row";
+row.dataset.stake=String(stake);
+row.dataset.owner=state.username;
+row.dataset.game=selectedDuelGame;
+row.dataset.console=consoleType;
+row.dataset.created="true";
+row.dataset.matched="false";
+
+const top=document.createElement("div");
+top.className="duel-row-top";
+const title=document.createElement("strong");
+title.textContent="⚔️ "+state.username+" — "+selectedDuelGame;
+const status=document.createElement("span");
+status.className="duel-status";
+status.textContent="چاوەڕوانی یاریزان";
+top.append(title,status);
+
+const info=document.createElement("div");
+info.className="duel-row-info";
+const amount=document.createElement("span");
+amount.textContent="بڕ: "+stake.toLocaleString()+" | کۆنسۆڵ: "+consoleType;
+
+const cancel=document.createElement("button");
+cancel.className="duel-action";
+cancel.textContent="هەڵوەشاندنەوە";
+cancel.onclick=()=>cancelMyDuel(cancel);
+
+info.append(amount,cancel);
+row.append(top,info);
+list.prepend(row);
+
+toast("چەلەنجی "+selectedDuelGame+" لەسەر "+consoleType+" بە "+stake.toLocaleString()+" Demo Credit دروست کرا ⚔️");
+}
+function cancelMyDuel(button){
+const row=button.closest(".duel-row");
+if(!row)return;
+if(row.dataset.created!=="true"){
+toast("ئەمە چەلەنجی نموونەییە و ناتوانرێت هەڵبوەشێنرێتەوە");
+return;
+}
+if(!getCurrentUser()){
+showLogin();
+return;
+}
+if(row.dataset.owner!==state.username){
+toast("تەنها خاوەنی چەلەنج دەتوانێت هەڵیبوەشێنێتەوە");
+return;
+}
+if(row.dataset.matched==="true"){
+toast("ئەم چەلەنجە پڕکراوەتەوە و ناتوانرێت هەڵیبوەشێنرێتەوە");
+return;
+}
+const stake=Number(row.dataset.stake)||0;
+row.remove();
+state.balance+=stake;
+saveState();
+updateUI();
+toast(stake.toLocaleString()+" کرێدیت گەڕێندرایەوە");
+}
+function joinDuel(button){
+const row=button.closest(".duel-row");
+if(!row)return;
+if(!getCurrentUser()){
+showLogin();
+toast("بۆ بەشداری لە چەلەنج دەبێت بچیتە ژوورەوە");
+return;
+}
+if(row.dataset.matched==="true"){
+toast("ئەم چەلەنجە پێشتر یاریزانی وەرگرتووە");
+return;
+}
+const owner=row.dataset.owner||"یاریزان";
+const game=row.dataset.game||"یاری";
+const consoleType=row.dataset.console||"دیاری نەکراو";
+const stake=Number(row.dataset.stake)||0;
+if(owner===state.username){
+toast("ناتوانیت بە چەلەنجی خۆت بەشداری بکەیت");
+return;
+}
+if(!Number.isSafeInteger(stake)||stake<100||stake>10000){
+toast("بڕی چەلەنج دروست نییە");
+return;
+}
+if(state.balance<stake){
+toast("کرێدیتی Demo ـت بۆ "+stake.toLocaleString()+" بەشی ناکات");
+return;
+}
+state.balance-=stake;
+saveState();
+updateUI();
+
+row.dataset.matched="true";
+row.dataset.opponent=state.username;
+
+const status=row.querySelector(".duel-status");
+if(status){
+status.textContent="یاریزانەکان تەواون";
+status.style.color="var(--gold)";
+}
+const info=row.querySelector(".duel-row-info");
+if(info){
+info.replaceChildren();
+const details=document.createElement("span");
+details.textContent="یاری: "+game+" | کۆنسۆڵ: "+consoleType+" | خاوەن: "+owner+" | بەشداربوو: "+state.username+" | کۆی Demo Credit: "+(stake*2).toLocaleString();
+info.appendChild(details);
+}
+toast("بەشداری چەلەنجی "+game+" لەسەر "+consoleType+" کردیت. ئەمە Demo ـە و یارییەکە دەبێت لە دەرەوە ڕێکبخرێت.");
+}
+function sendChat(){
+const input=document.getElementById("chatInput");
+const message=input.value.trim();
+if(!message)return;
+const messages=document.getElementById("chatMessages");
+const userMessage=document.createElement("div");
+userMessage.className="chat-message user";
+const bubble=document.createElement("div");
+bubble.className="chat-bubble";
+bubble.textContent=message;
+userMessage.appendChild(bubble);
+messages.appendChild(userMessage);
+input.value="";
+messages.scrollTop=messages.scrollHeight;
+setTimeout(()=>{
+const reply=document.createElement("div");
+reply.className="chat-message support";
+const answer=document.createElement("div");
+answer.className="chat-bubble";
+answer.textContent="سوپاس بۆ پەیامەکەت. ئەمە وەڵامی Demo ـە؛ تیمی Support ـی ڕاستەقینە پێویستی بە سێرڤەر و سیستەمی پشتیوانی هەیە.";
+reply.appendChild(answer);
+messages.appendChild(reply);
+messages.scrollTop=messages.scrollHeight;
+},500);
+}
+function toggleNotifications(){
+document.getElementById("notificationPanel").classList.toggle("show");
+document.getElementById("notificationDot").style.display="none";
+}
+function toggleTheme(){
+document.body.classList.toggle("light");
+localStorage.setItem("SPAY_X_THEME",document.body.classList.contains("light")?"light":"dark");
+}
+function loadTheme(){
+if(localStorage.getItem("SPAY_X_THEME")==="light")document.body.classList.add("light");
+}
+function gameClick(game){
+if(!getCurrentUser()){
+showLogin();
+toast("بۆ بەکارهێنانی یارییەکان تکایە بچۆ ژوورەوە");
+return;
+}
+toast(game+" هەڵبژێردرا 🎮");
+}
+document.addEventListener("keydown",event=>{
+if(event.key==="Escape"){
+closeProfile();
+closeAuth();
+document.getElementById("notificationPanel").classList.remove("show");
+}
+});
+document.addEventListener("click",event=>{
+const panel=document.getElementById("notificationPanel");
+if(!event.target.closest(".notification-panel")&&!event.target.closest('[title="ئاگادارکردنەوەکان"]')){
+panel.classList.remove("show");
+}
+});
+loadTheme();
+getCurrentUser();
+loadUserState();
+updateUI();
+updateDuelAmount();
+</script>
+</body>
+</html>
